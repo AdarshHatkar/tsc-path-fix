@@ -1,0 +1,19 @@
+{
+  "extends": "@jkm/tsconfig" /* from node_modules */,
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es5",
+    "module": "commonjs",
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "paths": {
+      "myproject/*": ["./*"],
+      "@commons": ["libo/commo/index-1.ts", "lib/commons/index.ts"],
+      "custom/*": ["custom_modules/*", "custom_modules/modules/*"],
+      "extra": ["../../project2/index"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

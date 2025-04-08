@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2017",
+    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist/server/",
+    "declarationDir": "./types",
+    "removeComments": true,
+    "importHelpers": false,
+    "strict": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "tsc-pathfix": {
+    "replacers": {
+      "default": {
+        "enabled": false
+        //"file": "" // File not needed for default replacers.
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "name": "tsc-pathfix",
+  "version": "1.0.0",
+  "description": "Zero-runtime TypeScript path resolver - converts aliases to relative paths at compile time. Fast, lightweight, with native watch mode.",
+  "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "bin": {
+    "tsc-pathfix": "dist/bin/index.js"
+  },
+  "engines": {
+    "node": ">=16.20.2"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "build:dev": "tsc -w",
+    "clean": "rimraf dist && tsc && npm link ",
+    "release:patch": "npm version patch",
+    "postversion": "git push && git push --tags && npm publish",
+    "format": "prettier --write \"**/*.{js,ts,json}\"",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdarshHatkar/tsc-pathfix.git"
+  },
+  "keywords": [
+    "typescript",
+    "paths",
+    "alias",
+    "absolute path",
+    "relative path",
+    "compilation",
+    "tsc",
+    "path-alias",
+    "typescript-paths",
+    "typescript-aliases",
+    "path-resolver",
+    "typescript-compiler",
+    "typescript-tools",
+    "zero-runtime",
+    "path-mapping",
+    "tsconfig-paths",
+    "tsc-alias",
+    "typescript-path-resolver",
+    "typescript-build-tools",
+    "typescript-compilation"
+  ],
+  "author": "Adarsh Hatkar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdarshHatkar/tsc-pathfix/issues"
+  },
+  "homepage": "https://github.com/AdarshHatkar/tsc-pathfix.git",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "commander": "^9.0.0",
+    "globby": "^11.0.4",
+    "mylas": "^2.1.9",
+    "normalize-path": "^3.0.0",
+    "plimit-lit": "^1.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@types/rimraf": "^3.0.2",
+    "@types/shelljs": "^0.8.11",
+    "husky": "^7.0.4",
+    "prettier": "^2.5.1",
+    "rimraf": "^6.0.1",
+    "shelljs": "^0.8.5",
+    "typescript": "^4.9.5",
+    "vitest": "^3.1.1"
+  }
+}

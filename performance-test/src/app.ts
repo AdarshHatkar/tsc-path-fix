@@ -1,0 +1,50 @@
+import 'reflect-metadata';
+import express from 'express';
+import { container } from 'tsyringe';
+import route0 from '@routes/route0';
+import route1 from '@routes/route1';
+import route2 from '@routes/route2';
+import route3 from '@routes/route3';
+import route4 from '@routes/route4';
+import route5 from '@routes/route5';
+import route6 from '@routes/route6';
+import route7 from '@routes/route7';
+import route8 from '@routes/route8';
+import route9 from '@routes/route9';
+import route10 from '@routes/route10';
+import route11 from '@routes/route11';
+import route12 from '@routes/route12';
+import route13 from '@routes/route13';
+import route14 from '@routes/route14';
+import route15 from '@routes/route15';
+import route16 from '@routes/route16';
+import route17 from '@routes/route17';
+import route18 from '@routes/route18';
+import route19 from '@routes/route19';
+
+const app = express();
+
+app.use(express.json());
+
+app.use('/api/resource0', route0);
+app.use('/api/resource1', route1);
+app.use('/api/resource2', route2);
+app.use('/api/resource3', route3);
+app.use('/api/resource4', route4);
+app.use('/api/resource5', route5);
+app.use('/api/resource6', route6);
+app.use('/api/resource7', route7);
+app.use('/api/resource8', route8);
+app.use('/api/resource9', route9);
+app.use('/api/resource10', route10);
+app.use('/api/resource11', route11);
+app.use('/api/resource12', route12);
+app.use('/api/resource13', route13);
+app.use('/api/resource14', route14);
+app.use('/api/resource15', route15);
+app.use('/api/resource16', route16);
+app.use('/api/resource17', route17);
+app.use('/api/resource18', route18);
+app.use('/api/resource19', route19);
+
+export default app;

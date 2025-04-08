@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsc-pathfix",
+    "start": "npm run build && node ./dist/main.js"
+  }
+}

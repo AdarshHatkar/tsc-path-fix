@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@routes/*": ["./src/routes/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@services/*": ["./src/services/*"],
+      "@models/*": ["./src/models/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@types/*": ["./src/types/*"],
+      "@prisma/*": ["./prisma/*"],
+      "@config/*": ["./src/config/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "prisma"],
+  "tsc-pathfix": {
+    "verbose": true,
+    "resolveFullPaths": true,
+    "debug": true,
+    "watch": true,
+    "replacers": {
+      "prismaReplacer": {
+        "enabled": false,
+        "file": "./tscAlias/replacer.cjs"
+      }
+    }
+  },
+  "tsc-alias": {
+    "verbose": true,
+    "resolveFullPaths": true,
+    "debug": true,
+    "watch": true,
+    "replacers": {
+      "prismaReplacer": {
+        "enabled": true,
+        "file": "./tscAlias/replacer.cjs"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@cursor": ["node_modules/buffercursor.ts/dist/index"],
+      "@cursor2": ["./node_modules/buffercursor.ts/dist/index"]
+    }
+  }
+}
