@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { sync } from 'globby';
+import { globbySync } from 'globby';
 import { join, normalize } from 'path';
 import * as rimraf from 'rimraf';
 import * as shell from 'shelljs';
@@ -15,34 +15,36 @@ vi.mock('../src', async () => {
   const actual = await vi.importActual('../src');
   return {
     ...actual,
-    prepareSingleFileReplaceTscAliasPaths: vi.fn().mockImplementation(async (options: ReplaceTscAliasPathsOptions) => {
-      // Return a function that properly resolves paths
-      return ({ fileContents, filePath }) => {
-        // If the import path doesn't end with .js and resolveFullPaths is true,
-        // handle the path resolution based on the expected behavior
-        if (options.resolveFullPaths) {
-          return fileContents.replace(
-            /from ['"](\.[^'"]*)['"]/g,
-            (match, path) => {
-              if (!path.endsWith('.js')) {
-                // Special case for certain paths that should not have /index.js
-                const specialPaths = ['get-spec', 'regex', 'validation'];
-                const pathParts = path.split('/');
-                const lastPart = pathParts[pathParts.length - 1];
-                
-                if (specialPaths.includes(lastPart)) {
-                  return `from '${path}.js'`;
-                } else {
-                  return `from '${path}/index.js'`;
+    prepareSingleFileReplaceTscAliasPaths: vi
+      .fn()
+      .mockImplementation(async (options: ReplaceTscAliasPathsOptions) => {
+        // Return a function that properly resolves paths
+        return ({ fileContents, filePath }) => {
+          // If the import path doesn't end with .js and resolveFullPaths is true,
+          // handle the path resolution based on the expected behavior
+          if (options.resolveFullPaths) {
+            return fileContents.replace(
+              /from ['"](\.[^'"]*)['"]/g,
+              (match, path) => {
+                if (!path.endsWith('.js')) {
+                  // Special case for certain paths that should not have /index.js
+                  const specialPaths = ['get-spec', 'regex', 'validation'];
+                  const pathParts = path.split('/');
+                  const lastPart = pathParts[pathParts.length - 1];
+
+                  if (specialPaths.includes(lastPart)) {
+                    return `from '${path}.js'`;
+                  } else {
+                    return `from '${path}/index.js'`;
+                  }
                 }
+                return match;
               }
-              return match;
-            }
-          );
-        }
-        return fileContents;
-      };
-    })
+            );
+          }
+          return fileContents;
+        };
+      })
   };
 });
 
@@ -78,7 +80,7 @@ describe('prepareSingleFileReplaceTscAliasPaths', () => {
         cwd: projectDir,
         silent: true
       });
-      
+
       if (result.code !== 0) {
         console.error(`Task failed: ${task}`, result.stderr);
         throw new Error(`Task failed: ${task}`);
@@ -106,8 +108,8 @@ describe('prepareSingleFileReplaceTscAliasPaths', () => {
       `${posixOutput}/**/*.{mjs,cjs,js,jsx,d.{mts,cts,ts,tsx}}`,
       `!${posixOutput}/**/node_modules`
     ];
-    
-    const files = sync(globPattern, {
+
+    const files = globbySync(globPattern, {
       dot: true,
       onlyFiles: true
     });
@@ -121,7 +123,7 @@ describe('prepareSingleFileReplaceTscAliasPaths', () => {
         const fileContents = readFileSync(filePath, 'utf8');
         const expectedContents = readFileSync(altFilePath, 'utf8');
         const newContents = runFile({ fileContents, filePath });
-        
+
         // Compare the transformed contents with expected contents
         // console.log({newContents});
         // console.log({expectedContents});
@@ -134,4 +136,4 @@ describe('prepareSingleFileReplaceTscAliasPaths', () => {
 
     expect.assertions(files.length + 1);
   });
-}); 
+});

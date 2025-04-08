@@ -35,4 +35,4 @@ it(`Import regex does not match edge cases from keywords in strings`, function (
     'another string using same quote type'
   `;
   expect(newImportStatementRegex().exec(testCase)?.[0]).toBeUndefined();
-}); 
+});

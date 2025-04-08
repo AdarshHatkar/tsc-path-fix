@@ -56,7 +56,7 @@ export class TrieNode<T> {
     return node
       ? name.length == 1
         ? node.data
-        : node.search(name.substring(1)) ?? node.data
+        : (node.search(name.substring(1)) ?? node.data)
       : this.data;
   }
 

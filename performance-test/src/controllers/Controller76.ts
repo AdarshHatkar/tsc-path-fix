@@ -5,7 +5,10 @@ import { PrismaClient } from '@prisma/client.js';
 
 @injectable()
 export class Controller76 {
-  constructor(private service: Service76, private prisma: PrismaClient) {}
+  constructor(
+    private service: Service76,
+    private prisma: PrismaClient
+  ) {}
 
   async getAll() {
     return this.service.findAll();

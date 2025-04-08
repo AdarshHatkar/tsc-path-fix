@@ -1,12 +1,12 @@
 /**
  * @file
  *
- * This file has all helperfunctions related to path resolution.
+ * This file has all helper functions related to path resolution.
  */
 
 /** */
 import normalizePath = require('normalize-path');
-import { sync } from 'globby';
+import { globbySync } from 'globby';
 import { normalize, relative, resolve } from 'path';
 import { AliasPath, IProjectConfig } from '../interfaces';
 
@@ -21,7 +21,7 @@ function getProjectDirPathInOutDir(
   projectDir: string
 ): string | undefined {
   const posixOutput = outDir.replace(/\\/g, '/');
-  const dirs = sync(
+  const dirs = globbySync(
     [
       `${posixOutput}/**/${projectDir}`,
       `!${posixOutput}/**/${projectDir}/**/${projectDir}`,
@@ -54,8 +54,8 @@ export function relativeOutPathToConfigDir(config: IProjectConfig) {
   // Find relative path access of configDir in outPath
   if (config.configDirInOutPath) {
     config.hasExtraModule = true;
-    const stepsbackPath = relative(config.configDirInOutPath, config.outPath);
-    const splitStepBackPath = normalizePath(stepsbackPath).split('/');
+    const stepsBackPath = relative(config.configDirInOutPath, config.outPath);
+    const splitStepBackPath = normalizePath(stepsBackPath).split('/');
     const nbOfStepBack = splitStepBackPath.length;
     const splitConfDirInOutPath = config.configDirInOutPath.split('/');
 

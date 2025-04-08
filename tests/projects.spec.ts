@@ -9,4 +9,4 @@ import { runTestProject } from './utils';
     const code = await runTestProject(value);
     expect(code).toEqual(0);
   });
-}); 
+});

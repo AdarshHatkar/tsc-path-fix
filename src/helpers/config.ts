@@ -29,39 +29,41 @@ import normalizePath = require('normalize-path');
 export function validateTscPathfixConfig(config: IRawTSConfig): string[] {
   const errors: string[] = [];
   const tscPathfixConfig = config['tsc-pathfix'];
-  
+
   if (!tscPathfixConfig) {
     return errors; // No tsc-pathfix config is valid
   }
-  
+
   // Validate replacers if present
   if (tscPathfixConfig.replacers) {
     const replacers = tscPathfixConfig.replacers as ReplacerOptions;
-    
+
     for (const [name, options] of Object.entries(replacers)) {
       if (options.enabled === undefined) {
         errors.push(`Replacer "${name}" is missing the "enabled" property`);
       }
-      
+
       if (options.enabled && options.file === undefined) {
-        errors.push(`Enabled replacer "${name}" is missing the "file" property`);
+        errors.push(
+          `Enabled replacer "${name}" is missing the "file" property`
+        );
       }
     }
   }
-  
+
   // Validate fileExtensions if present
   if (tscPathfixConfig.fileExtensions) {
     const { inputGlob, outputCheck } = tscPathfixConfig.fileExtensions;
-    
+
     if (inputGlob && typeof inputGlob !== 'string') {
       errors.push('fileExtensions.inputGlob must be a string');
     }
-    
+
     if (outputCheck && !Array.isArray(outputCheck)) {
       errors.push('fileExtensions.outputCheck must be an array');
     }
   }
-  
+
   return errors;
 }
 
@@ -78,8 +80,8 @@ export async function prepareConfig(
   const configFile = !options.configFile
     ? resolve(process.cwd(), 'tsconfig.json')
     : !isAbsolute(options.configFile)
-    ? resolve(process.cwd(), options.configFile)
-    : options.configFile;
+      ? resolve(process.cwd(), options.configFile)
+      : options.configFile;
 
   output.assert(existsSync(configFile), `Invalid file path => ${configFile}`);
 
@@ -167,17 +169,17 @@ export const loadConfig = (
     output.error(`File ${file} not found`, true);
   }
   output.debug('Loading config file:', file);
-  
+
   // Load the raw config
   const rawConfig = Json.loadS<IRawTSConfig>(file, true);
-  
+
   // Validate the tsc-pathfix section
   const validationErrors = validateTscPathfixConfig(rawConfig);
   if (validationErrors.length > 0) {
     const errorMessage = `Invalid tsc-pathfix configuration in ${file}:\n${validationErrors.join('\n')}`;
     output.error(errorMessage, true);
   }
-  
+
   const {
     extends: ext,
     compilerOptions: { baseUrl, outDir, declarationDir, paths } = {

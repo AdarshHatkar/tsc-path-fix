@@ -54,7 +54,10 @@ const importRegexString = `(?:${[
 ].join(`|`)})`;
 
 class ImportPathResolver {
-  constructor(public source: string, readonly sourcePath: string) {}
+  constructor(
+    public source: string,
+    readonly sourcePath: string
+  ) {}
 
   get sourceDir() {
     return dirname(this.sourcePath);

@@ -7,14 +7,17 @@ export const projectsRoot = join(__dirname, '../projects');
 
 export function runTestProject(projectNumber: number) {
   const projectDir = join(projectsRoot, `project${projectNumber}`);
-  
+
   // Clean up dist directory
   try {
     rimraf.sync(join(projectDir, 'dist'));
   } catch (error) {
-    console.error(`Error cleaning dist directory for project ${projectNumber}:`, error);
+    console.error(
+      `Error cleaning dist directory for project ${projectNumber}:`,
+      error
+    );
   }
-  
+
   // Use spawn instead of shell.exec for better process control
   return new Promise<number>((resolve) => {
     const npmProcess = spawn('npm', ['start'], {
@@ -22,20 +25,20 @@ export function runTestProject(projectNumber: number) {
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: true
     });
-    
+
     let stderr = '';
-    
+
     npmProcess.stderr.on('data', (data) => {
       stderr += data.toString();
     });
-    
+
     npmProcess.on('close', (code) => {
       if (code !== 0) {
         console.error(`Project ${projectNumber} failed:`, stderr);
       }
       resolve(code || 0);
     });
-    
+
     // Set a timeout to kill the process if it takes too long
     const timeout = setTimeout(() => {
       try {
@@ -43,10 +46,13 @@ export function runTestProject(projectNumber: number) {
         console.error(`Project ${projectNumber} timed out after 30 seconds`);
         resolve(1);
       } catch (error) {
-        console.error(`Error killing process for project ${projectNumber}:`, error);
+        console.error(
+          `Error killing process for project ${projectNumber}:`,
+          error
+        );
       }
     }, 30000);
-    
+
     npmProcess.on('close', () => {
       clearTimeout(timeout);
     });
@@ -78,4 +84,4 @@ import
   '8'
 
 const notAnImport = unimport('something');
-`; 
+`;

@@ -14,7 +14,10 @@ export class Output implements IOutput {
   // Default empty
   debug = (message: string, obj?: unknown) => {};
 
-  constructor(private verb = false, debugMode = false) {
+  constructor(
+    private verb = false,
+    debugMode = false
+  ) {
     if (debugMode) {
       // When in debug mode. Add debug function.
       this.debug = (message: string, obj?: unknown) => {
