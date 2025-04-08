@@ -15,13 +15,12 @@
   "scripts": {
     "prepare": "husky install",
     "build:dev": "tsc -w",
-    "build": "tsc ",
     "clean": "rimraf dist && tsc && npm link ",
     "release:patch": "npm version patch",
     "postversion": "git push && git push --tags && npm publish",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "test": " vitest run",
-    "test:watch": " vitest"
+    "test": "npm run clean && vitest run",
+    "test:watch": "npm run clean && vitest"
   },
   "repository": {
     "type": "git",
