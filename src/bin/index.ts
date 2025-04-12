@@ -5,7 +5,7 @@ import { replaceTscAliasPaths } from '..';
 const { version } = require('../../package.json');
 
 program
-  .name('tsc-pathfix')
+  .name('tsc-path-fix')
   .version(version)
   .option('-p, --project <file>', 'path to tsconfig.json')
   .option('-w, --watch', 'Observe file changes')

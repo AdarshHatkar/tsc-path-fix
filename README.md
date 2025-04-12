@@ -1,13 +1,13 @@
-# tsc-pathfix
+# tsc-path-fix
 
 Zero-runtime TypeScript path resolver that converts aliases to relative paths at compile time. Faster and lighter than alternatives, with native watch mode support.
 
-[![npm version](https://badge.fury.io/js/tsc-pathfix.svg)](https://badge.fury.io/js/tsc-pathfix)
+[![npm version](https://badge.fury.io/js/tsc-path-fix.svg)](https://badge.fury.io/js/tsc-path-fix)
 [![License](https://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 [![Donate](https://img.shields.io/badge/Donate-WhatsApp-blue.svg)](https://api.whatsapp.com/send/?phone=919834877006)
-[![Downloads](https://img.shields.io/npm/dm/tsc-pathfix.svg)](https://www.npmjs.com/package/tsc-pathfix)
-[![GitHub stars](https://img.shields.io/github/stars/AdarshHatkar/tsc-pathfix.svg)](https://github.com/AdarshHatkar/tsc-pathfix/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/AdarshHatkar/tsc-pathfix.svg)](https://github.com/AdarshHatkar/tsc-pathfix/issues)
+[![Downloads](https://img.shields.io/npm/dm/tsc-path-fix.svg)](https://www.npmjs.com/package/tsc-path-fix)
+[![GitHub stars](https://img.shields.io/github/stars/AdarshHatkar/tsc-path-fix.svg)](https://github.com/AdarshHatkar/tsc-path-fix/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/AdarshHatkar/tsc-path-fix.svg)](https://github.com/AdarshHatkar/tsc-path-fix/issues)
 
 > **TypeScript Path Alias Resolver** - Fast, zero-runtime path resolution for TypeScript projects.
 
@@ -22,7 +22,7 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 
 ## Comparison to [tsconfig-paths](https://github.com/dividab/tsconfig-paths)
 
-| Feature | tsc-pathfix | tsconfig-paths |
+| Feature | tsc-path-fix | tsconfig-paths |
 |---------|-------------|----------------|
 | Runtime Dependencies | None | Required |
 | Path Resolution | Compile-time | Runtime |
@@ -31,7 +31,7 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 
 ## Comparison to [tsc-alias](https://github.com/justkey007/tsc-alias)
 
-| Feature | tsc-pathfix | tsc-alias |
+| Feature | tsc-path-fix | tsc-alias |
 |---------|-------------|-----------|
 | Runtime Dependencies | None | None |
 | Path Resolution | Compile-time | Compile-time |
@@ -45,14 +45,14 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 
 ## Installation
 
-You can install tsc-pathfix either globally or as a dev dependency:
+You can install tsc-path-fix either globally or as a dev dependency:
 
 ```sh
 # Global installation
-npm install -g tsc-pathfix
+npm install -g tsc-path-fix
 
 # Local installation (recommended)
-npm install --save-dev tsc-pathfix
+npm install --save-dev tsc-path-fix
 ```
 
 ## Quick Start
@@ -62,8 +62,8 @@ npm install --save-dev tsc-pathfix
 ```json
 {
   "scripts": {
-    "build": "tsc && tsc-pathfix",
-    "build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-pathfix -w\")"
+    "build": "tsc && tsc-path-fix",
+    "build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-path-fix -w\")"
   }
 }
 ```
@@ -120,7 +120,7 @@ import { util } from './utils/helper.js';
 ```json
 {
   "scripts": {
-    "dev": "concurrently \"tsc -w\" \"tsc-pathfix -w\""
+    "dev": "concurrently \"tsc -w\" \"tsc-path-fix -w\""
   }
 }
 ```
@@ -130,7 +130,7 @@ import { util } from './utils/helper.js';
 ### Command Line Options
 
 ```sh
-tsc-pathfix [options]
+tsc-path-fix [options]
 
 Options:
   -p, --project <path>     Path to tsconfig.json (default: "tsconfig.json")
@@ -148,7 +148,7 @@ Options:
   "compilerOptions": {
     // ... your TypeScript options
   },
-  "tsc-pathfix": {
+  "tsc-path-fix": {
     "verbose": false,
     "resolveFullPaths": true,
     "replacers": {
@@ -170,7 +170,7 @@ Options:
 ### replaceTscAliasPaths(options?)
 
 ```typescript
-import { replaceTscAliasPaths } from 'tsc-pathfix';
+import { replaceTscAliasPaths } from 'tsc-path-fix';
 
 // Basic usage
 replaceTscAliasPaths();
@@ -186,7 +186,7 @@ replaceTscAliasPaths({
 ### Single File Processing
 
 ```typescript
-import { prepareSingleFileReplaceTscAliasPaths } from 'tsc-pathfix';
+import { prepareSingleFileReplaceTscAliasPaths } from 'tsc-path-fix';
 
 const processFile = await prepareSingleFileReplaceTscAliasPaths({
   project: 'tsconfig.json'
@@ -208,7 +208,7 @@ const result = processFile({
    - Run with `--debug` flag to see detailed information
 
 2. **Watch mode not working**
-   - Verify that both `tsc -w` and `tsc-pathfix -w` are running
+   - Verify that both `tsc -w` and `tsc-path-fix -w` are running
    - Check file permissions in the output directory
 
 3. **External project references**
@@ -224,7 +224,7 @@ Run with the `--debug` flag to get detailed information about:
 - Replacement operations
 
 ```sh
-tsc-pathfix --debug
+tsc-path-fix --debug
 ```
 
 ## Contributing

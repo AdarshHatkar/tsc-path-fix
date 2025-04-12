@@ -34,7 +34,7 @@ const OpenFilesLimit = pLimit(500);
 
 /**
  * replaceTscAliasPaths replaces the aliases in the project.
- * @param {ReplaceTscAliasPathsOptions} options tsc-pathfix options.
+ * @param {ReplaceTscAliasPathsOptions} options tsc-path-fix options.
  */
 export async function replaceTscAliasPaths(
   options: ReplaceTscAliasPathsOptions = { ...defaultConfig }
@@ -108,7 +108,7 @@ export type SingleFileReplacer = (input: {
 
 /**
  * prepareSingleFileReplaceTscAliasPaths prepares a SingleFileReplacer.
- * @param {ReplaceTscAliasPathsOptions} options tsc-pathfix options.
+ * @param {ReplaceTscAliasPathsOptions} options tsc-path-fix options.
  * @returns {Promise<SingleFileReplacer>} a SingleFileReplacer to use for replacing aliases in a single file.
  */
 export async function prepareSingleFileReplaceTscAliasPaths(

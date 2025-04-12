@@ -4,7 +4,7 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build:pathfix": "tsc && tsc-pathfix",
+    "build:pathfix": "tsc && tsc-path-fix",
     "build:alias": "tsc && tsc-alias",
     "test:performance": "node scripts/comparePerformance.mjs",
     "test:performance:pathfix": "node scripts/comparePerformance.mjs --only pathfix",
@@ -23,7 +23,7 @@
     "@types/express": "^4.17.17",
     "@types/node": "^20.0.0",
     "tsc-alias": "^1.8.8",
-    "tsc-pathfix": "^1.0.0",
+    "tsc-path-fix": "^1.0.0",
     "typescript": "^5.0.0"
   }
 }

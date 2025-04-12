@@ -40,8 +40,8 @@ console.log(`Project contains ${fileCount} TypeScript files\n`);
 const iterations = 3; // Reduced iterations for larger project
 console.log('Running performance tests...\n');
 
-// Test tsc-pathfix
-console.log('Testing tsc-pathfix:');
+// Test tsc-path-fix
+console.log('Testing tsc-path-fix:');
 let pathfixTimes = [];
 for (let i = 0; i < iterations; i++) {
   cleanDist();
@@ -65,11 +65,11 @@ const avgAlias = aliasTimes.reduce((a, b) => a + b) / iterations;
 console.log(`Average: ${avgAlias.toFixed(2)}ms\n`);
 
 console.log('Summary:');
-console.log(`tsc-pathfix average: ${avgPathfix.toFixed(2)}ms`);
+console.log(`tsc-path-fix average: ${avgPathfix.toFixed(2)}ms`);
 console.log(`tsc-alias average: ${avgAlias.toFixed(2)}ms`);
 console.log(`Difference: ${Math.abs(avgPathfix - avgAlias).toFixed(2)}ms`);
 console.log(
-  `tsc-pathfix is ${avgPathfix < avgAlias ? 'faster' : 'slower'} by ${(
+  `tsc-path-fix is ${avgPathfix < avgAlias ? 'faster' : 'slower'} by ${(
     (Math.abs(avgPathfix - avgAlias) / Math.max(avgPathfix, avgAlias)) *
     100
   ).toFixed(2)}%`

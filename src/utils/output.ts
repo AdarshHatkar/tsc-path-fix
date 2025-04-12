@@ -22,7 +22,7 @@ export class Output implements IOutput {
       // When in debug mode. Add debug function.
       this.debug = (message: string, obj?: unknown) => {
         console.debug(
-          `tsc-pathfix debug: ${message} ${
+          `tsc-path-fix debug: ${message} ${
             obj
               ? inspect(obj, {
                   showHidden: true,
@@ -44,13 +44,13 @@ export class Output implements IOutput {
 
   info(message: string) {
     if (!this.verb) return;
-    console.log(`tsc-pathfix info: ${message}`);
+    console.log(`tsc-path-fix info: ${message}`);
   }
 
   error(message: string, exitProcess = false) {
     console.error(
-      //[BgRed]tsc-pathfix error:[Reset] [FgRed_]${message}[Reset]
-      `\x1b[41mtsc-pathfix error:\x1b[0m \x1b[31m${message}\x1b[0m`
+      //[BgRed]tsc-path-fix error:[Reset] [FgRed_]${message}[Reset]
+      `\x1b[41mtsc-path-fix error:\x1b[0m \x1b[31m${message}\x1b[0m`
     );
 
     if (exitProcess) process.exit(1);

@@ -2,7 +2,7 @@
   "name": "project18",
   "type": "module",
   "scripts": {
-    "build": "tsc && tsc-pathfix",
+    "build": "tsc && tsc-path-fix",
     "start": "npm run build && node ./dist/src/index.js"
   }
 }

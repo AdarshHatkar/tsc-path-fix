@@ -12,7 +12,7 @@
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"],
-  "tsc-pathfix": {
+  "tsc-path-fix": {
     "resolveFullPaths": true
   }
 }

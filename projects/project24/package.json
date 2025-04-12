@@ -1,23 +1,23 @@
 {
-  "name": "tsc-pathfix-bug-demo",
+  "name": "tsc-path-fix-bug-demo",
   "version": "1.0.0",
   "description": "Demonstration of a bug with incorrect module path",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm install && tsc && tsc-pathfix",
+    "build": "npm install && tsc && tsc-path-fix",
     "start": "npm run build && node dist/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jokero/tsc-pathfix-bug.git"
+    "url": "git+https://github.com/Jokero/tsc-path-fix-bug.git"
   },
   "author": "Dmitry Kirilyuk <gk.joker@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/i18n": "^0.13.6",
     "ts-node": "^10.9.1",
-    "tsc-pathfix": "file:../../",
+    "tsc-path-fix": "file:../../",
     "typescript": "^4.9.5"
   },
   "dependencies": {

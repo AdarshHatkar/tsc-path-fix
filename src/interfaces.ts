@@ -3,7 +3,7 @@ import { PathCache, TrieNode } from './utils';
 export interface IRawTSConfig {
   extends?: string;
   compilerOptions?: ITSConfig;
-  'tsc-pathfix'?: {
+  'tsc-path-fix'?: {
     replacers?: ReplacerOptions;
     resolveFullPaths?: boolean;
     verbose?: boolean;

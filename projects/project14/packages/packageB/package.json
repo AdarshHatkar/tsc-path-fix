@@ -1,7 +1,7 @@
 {
   "name": "packageB",
   "scripts": {
-    "build": "tsc && tsc-pathfix",
+    "build": "tsc && tsc-path-fix",
     "start": "node ./dist/index.js"
   },
   "dependencies": {

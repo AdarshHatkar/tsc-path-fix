@@ -1,8 +1,8 @@
-# tsc-pathfix-bug-demo
+# tsc-path-fix-bug-demo
 
 Demonstration of a bug with incorrect module path resolution.
 
-Steps to reproduce https://github.com/AdarshHatkar/tsc-pathfix/issues/154:
+Steps to reproduce https://github.com/AdarshHatkar/tsc-path-fix/issues/154:
 
 1) Install dependencies
 ```sh

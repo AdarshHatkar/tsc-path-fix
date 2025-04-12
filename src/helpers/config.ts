@@ -22,16 +22,16 @@ import { importReplacers } from './replacers';
 import normalizePath = require('normalize-path');
 
 /**
- * Validates the tsc-pathfix configuration and returns detailed error messages if invalid
- * @param {IRawTSConfig} config The raw tsconfig with tsc-pathfix section
+ * Validates the tsc-path-fix configuration and returns detailed error messages if invalid
+ * @param {IRawTSConfig} config The raw tsconfig with tsc-path-fix section
  * @returns {string[]} Array of error messages, empty if config is valid
  */
 export function validateTscPathfixConfig(config: IRawTSConfig): string[] {
   const errors: string[] = [];
-  const tscPathfixConfig = config['tsc-pathfix'];
+  const tscPathfixConfig = config['tsc-path-fix'];
 
   if (!tscPathfixConfig) {
-    return errors; // No tsc-pathfix config is valid
+    return errors; // No tsc-path-fix config is valid
   }
 
   // Validate replacers if present
@@ -68,7 +68,7 @@ export function validateTscPathfixConfig(config: IRawTSConfig): string[] {
 }
 
 /**
- * prepareConfig prepares a IConfig object for tsc-pathfix to be used.
+ * prepareConfig prepares a IConfig object for tsc-path-fix to be used.
  * @param {ReplaceTscAliasPathsOptions} options options that are used to prepare a config object.
  * @returns {Promise<IConfig>} a promise of a IConfig object.
  */
@@ -173,10 +173,10 @@ export const loadConfig = (
   // Load the raw config
   const rawConfig = Json.loadS<IRawTSConfig>(file, true);
 
-  // Validate the tsc-pathfix section
+  // Validate the tsc-path-fix section
   const validationErrors = validateTscPathfixConfig(rawConfig);
   if (validationErrors.length > 0) {
-    const errorMessage = `Invalid tsc-pathfix configuration in ${file}:\n${validationErrors.join('\n')}`;
+    const errorMessage = `Invalid tsc-path-fix configuration in ${file}:\n${validationErrors.join('\n')}`;
     output.error(errorMessage, true);
   }
 
@@ -188,7 +188,7 @@ export const loadConfig = (
       declarationDir: undefined,
       paths: undefined
     },
-    'tsc-pathfix': TSCAliasConfig
+    'tsc-path-fix': TSCAliasConfig
   } = rawConfig;
 
   const configDir = dirname(file);

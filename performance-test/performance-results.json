@@ -8,8 +8,8 @@
   },
   "tests": [
     {
-      "name": "tsc-pathfix",
-      "description": "Using tsc-pathfix with both replacers",
+      "name": "tsc-path-fix",
+      "description": "Using tsc-path-fix with both replacers",
       "iterations": [
         {
           "duration": 9.1820536,

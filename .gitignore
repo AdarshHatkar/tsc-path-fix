@@ -63,7 +63,7 @@ typings/
 # Compiled source
 dist
 dist-base
-dist-tsc-pathfix
+dist-tsc-path-fix
 temp
 # Optional eslint cache
 .eslintcache

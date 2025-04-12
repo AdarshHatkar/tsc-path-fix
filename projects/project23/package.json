@@ -2,7 +2,7 @@
   "name": "project23",
   "private": true,
   "scripts": {
-    "build": "npm install && tsc && tsc-pathfix",
+    "build": "npm install && tsc && tsc-path-fix",
     "start": "npm run build && node ./dist/index.js"
   },
   "dependencies": {

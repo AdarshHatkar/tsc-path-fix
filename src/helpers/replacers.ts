@@ -13,9 +13,9 @@ import { replaceSourceImportPaths, resolveFullImportPaths } from '../utils';
 import normalizePath = require('normalize-path');
 
 /**
- * importReplacers imports replacers for tsc-pathfix to use.
- * @param {IConfig} config the tsc-pathfix config object.
- * @param {ReplacerOptions} replacers the tsc-pathfix replacer options.
+ * importReplacers imports replacers for tsc-path-fix to use.
+ * @param {IConfig} config the tsc-path-fix config object.
+ * @param {ReplacerOptions} replacers the tsc-path-fix replacer options.
  * @param {string[]} cmdReplacers array of filepaths to replacers from command-line.
  */
 export async function importReplacers(
@@ -122,7 +122,7 @@ export async function importReplacers(
  * replaceAlias replaces aliases in file.
  * @param {IConfig} config configuration
  * @param {string} file file to replace aliases in.
- * @param {boolean} resolveFullPath if tsc-pathfix should resolve the full path
+ * @param {boolean} resolveFullPath if tsc-path-fix should resolve the full path
  * @returns {Promise<boolean>} if something has been replaced.
  */
 export async function replaceAlias(
@@ -155,7 +155,7 @@ export async function replaceAlias(
  * @param {IConfig} config configuration
  * @param {string} file path of the file to replace aliases in.
  * @param {string} code contents of the file to replace aliases in.
- * @param {boolean} resolveFullPath if tsc-pathfix should resolve the full path
+ * @param {boolean} resolveFullPath if tsc-path-fix should resolve the full path
  * @returns {string} content of the file with any replacements possible applied.
  */
 export function replaceAliasString(

@@ -20,9 +20,9 @@ const reportMode = args.includes('--report');
 // Test configurations
 const configs = [
   {
-    name: 'tsc-pathfix',
+    name: 'tsc-path-fix',
     command: 'npm run build:pathfix',
-    description: 'Using tsc-pathfix with both replacers'
+    description: 'Using tsc-path-fix with both replacers'
   },
   {
     name: 'tsc-alias',

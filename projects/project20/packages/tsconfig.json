@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "tsc-pathfix": {
+  "tsc-path-fix": {
     "verbose": false,
     "resolveFullPaths": true,
     "replacers": {

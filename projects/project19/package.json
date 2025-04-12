@@ -2,7 +2,7 @@
   "name": "project19",
   "type": "module",
   "scripts": {
-    "build": "tsc && tsc-pathfix",
+    "build": "tsc && tsc-path-fix",
     "build:tsc-base": "tsc --outDir dist-base",
     "start": "npm run build && node ./dist/src/index.js"
   }

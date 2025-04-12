@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "tsc-pathfix": {
+  "tsc-path-fix": {
     "replacers": {
       "default": {
         "enabled": false

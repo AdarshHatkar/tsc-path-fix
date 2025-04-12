@@ -2,7 +2,7 @@
   "name": "project17",
   "type": "module",
   "scripts": {
-    "build": "tsc && tsc-pathfix --resolve-full-paths",
+    "build": "tsc && tsc-path-fix --resolve-full-paths",
     "start": "npm run build && node ./dist/src/index.js"
   }
 }
