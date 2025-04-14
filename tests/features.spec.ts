@@ -135,3 +135,4 @@ describe('Integration test with project25', () => {
     expect(tsconfig['tsc-path-fix'].showProgress).toBe(true);
   });
 });
+
