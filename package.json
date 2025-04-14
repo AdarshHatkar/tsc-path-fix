@@ -1,6 +1,6 @@
 {
   "name": "tsc-path-fix",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Zero-runtime TypeScript path resolver - converts aliases to relative paths at compile time. Fast, lightweight, with native watch mode.",
   "main": "dist/index.js",
   "files": [
