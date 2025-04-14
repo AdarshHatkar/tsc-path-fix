@@ -27,6 +27,7 @@
     "url": "https://github.com/AdarshHatkar/tsc-path-fix.git"
   },
   "keywords": [
+    "tsc-path-fix",
     "typescript",
     "paths",
     "alias",
