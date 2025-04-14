@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-04-14T19:12:18.860Z",
+  "timestamp": "2025-04-14T21:36:09.547Z",
   "system": {
     "platform": "win32",
     "arch": "x64",
@@ -12,23 +12,23 @@
       "description": "Using tsc-path-fix with both replacers",
       "iterations": [
         {
-          "duration": 25.0491463,
-          "timestamp": "2025-04-14T19:12:43.914Z"
+          "duration": 34.0249623,
+          "timestamp": "2025-04-14T21:36:43.578Z"
         },
         {
-          "duration": 25.4597615,
-          "timestamp": "2025-04-14T19:13:09.375Z"
+          "duration": 34.0632083,
+          "timestamp": "2025-04-14T21:37:17.642Z"
         },
         {
-          "duration": 26.2631055,
-          "timestamp": "2025-04-14T19:13:35.638Z"
+          "duration": 33.4340668,
+          "timestamp": "2025-04-14T21:37:51.077Z"
         }
       ],
       "stats": {
-        "min": 25.0491463,
-        "max": 26.2631055,
-        "avg": 25.590671099999998,
-        "total": 76.7720133
+        "min": 33.4340668,
+        "max": 34.0632083,
+        "avg": 33.8407458,
+        "total": 101.5222374
       }
     },
     {
@@ -36,23 +36,23 @@
       "description": "Using tsc-alias with both replacers",
       "iterations": [
         {
-          "duration": 27.57623,
-          "timestamp": "2025-04-14T19:14:03.215Z"
+          "duration": 34.4449361,
+          "timestamp": "2025-04-14T21:38:25.523Z"
         },
         {
-          "duration": 27.299367,
-          "timestamp": "2025-04-14T19:14:30.515Z"
+          "duration": 34.2751227,
+          "timestamp": "2025-04-14T21:38:59.799Z"
         },
         {
-          "duration": 27.3194895,
-          "timestamp": "2025-04-14T19:14:57.835Z"
+          "duration": 33.4207097,
+          "timestamp": "2025-04-14T21:39:33.220Z"
         }
       ],
       "stats": {
-        "min": 27.299367,
-        "max": 27.57623,
-        "avg": 27.39836216666667,
-        "total": 82.1950865
+        "min": 33.4207097,
+        "max": 34.4449361,
+        "avg": 34.04692283333333,
+        "total": 102.14076850000001
       }
     }
   ]
