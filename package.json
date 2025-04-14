@@ -15,12 +15,13 @@
   "scripts": {
     "prepare": "husky install",
     "build:dev": "tsc -w",
-    "clean": "rimraf dist && tsc && npm link ",
+    "clean": "rimraf dist && tsc",
     "release:patch": "npm version patch",
     "postversion": "git push && git push --tags && npm publish",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
     "test": "npm run clean && vitest run",
-    "test:watch": "npm run clean && vitest"
+    "test:watch": "npm run clean && vitest",
+    "npm:install": "npm-recursive-install "
   },
   "repository": {
     "type": "git",
@@ -68,6 +69,7 @@
     "@types/rimraf": "^3.0.2",
     "@types/shelljs": "^0.8.11",
     "husky": "^9.0.11",
+    "npm-recursive-install": "^1.0.8",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "shelljs": "^0.8.5",

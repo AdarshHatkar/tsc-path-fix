@@ -20,6 +20,7 @@ export function runTestProject(projectNumber: number) {
 
   // Use spawn instead of shell.exec for better process control
   return new Promise<number>((resolve) => {
+    
     const npmProcess = spawn('npm', ['start'], {
       cwd: projectDir,
       stdio: ['ignore', 'pipe', 'pipe'],

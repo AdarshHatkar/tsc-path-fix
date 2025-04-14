@@ -3,5 +3,9 @@
   "scripts": {
     "build": "tsc && tsc-path-fix -r replacer.js",
     "start": "npm run build && node ./dist/server/index.js"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }

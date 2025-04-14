@@ -5,5 +5,9 @@
     "build": "tsc -p packages/tsconfig.json && tsc-path-fix -p packages/tsconfig.json",
     "build:tsc-base": "tsc --outDir dist-base",
     "start": "npm run build && node ./dist/main.js"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }

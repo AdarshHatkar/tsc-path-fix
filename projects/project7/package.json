@@ -5,6 +5,7 @@
     "start": "npm run build && node ./dist/project7/src/index.js"
   },
   "devDependencies": {
-    "@tsconfig/node14": "^1.0.0"
+    "@tsconfig/node14": "^1.0.0",
+    "tsc-path-fix": "file:../../"
   }
 }

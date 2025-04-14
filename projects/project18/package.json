@@ -4,5 +4,9 @@
   "scripts": {
     "build": "tsc && tsc-path-fix",
     "start": "npm run build && node ./dist/src/index.js"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }

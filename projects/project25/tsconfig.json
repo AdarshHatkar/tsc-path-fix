@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "tsc-path-fix": {
+    "showProgress": true,
+    "verbose": true,
+    "fileExtensions": {
+      "inputGlob": "{mjs,cjs,js,jsx,d.{mts,cts,ts,tsx}}",
+      "outputCheck": [".js", ".jsx", ".mjs", ".cjs", ".d.ts"]
+    }
+  }
+}

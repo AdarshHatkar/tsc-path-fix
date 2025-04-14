@@ -21,7 +21,7 @@ const reportMode = args.includes('--report');
 const configs = [
   {
     name: 'tsc-path-fix',
-    command: 'npm run build:pathfix',
+    command: 'npm run build:path-fix',
     description: 'Using tsc-path-fix with both replacers'
   },
   {

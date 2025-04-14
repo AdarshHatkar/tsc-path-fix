@@ -8,6 +8,7 @@ export interface IRawTSConfig {
     resolveFullPaths?: boolean;
     verbose?: boolean;
     fileExtensions?: Partial<FileExtensions>;
+    showProgress?: boolean;
   };
 }
 
@@ -31,6 +32,7 @@ export interface ITSConfig {
   resolveFullPaths?: boolean;
   verbose?: boolean;
   fileExtensions?: Partial<FileExtensions>;
+  showProgress?: boolean;
 }
 
 export interface IProjectConfig {
@@ -51,6 +53,7 @@ export interface IConfig extends IProjectConfig {
   output: IOutput;
   aliasTrie: TrieNode<Alias>;
   replacers: AliasReplacer[];
+  showProgress?: boolean;
 }
 
 export interface ReplaceTscAliasPathsOptions {
@@ -66,6 +69,7 @@ export interface ReplaceTscAliasPathsOptions {
   output?: IOutput;
   aliasTrie?: TrieNode<Alias>;
   fileExtensions?: Partial<FileExtensions>;
+  showProgress?: boolean;
 }
 
 export interface Alias {

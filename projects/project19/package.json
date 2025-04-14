@@ -5,5 +5,9 @@
     "build": "tsc && tsc-path-fix",
     "build:tsc-base": "tsc --outDir dist-base",
     "start": "npm run build && node ./dist/src/index.js"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }

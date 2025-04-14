@@ -10,6 +10,7 @@ import {
   IProjectConfig,
   ReplaceTscAliasPathsOptions
 } from './interfaces';
+import { ProgressBar } from './utils/progress-bar';
 
 // export interfaces for api use.
 export {
@@ -27,7 +28,8 @@ const defaultConfig = {
   debug: false,
   declarationDir: undefined,
   output: undefined,
-  aliasTrie: undefined
+  aliasTrie: undefined,
+  showProgress: true
 };
 
 const OpenFilesLimit = pLimit(500);
@@ -41,6 +43,7 @@ export async function replaceTscAliasPaths(
 ) {
   const config = await prepareConfig(options);
   const output = config.output;
+  const showProgress = options.showProgress !== undefined ? options.showProgress : config.showProgress;
 
   // Finding files and changing alias paths
   const posixOutput = config.outPath.replace(/\\/g, '/').replace(/\/+$/g, '');
@@ -55,23 +58,49 @@ export async function replaceTscAliasPaths(
   });
   output.debug('Found files:', files);
 
+  let progressBar: ProgressBar;
+  let processedCount = 0;
+
+  // Initialize progress bar if enabled and there are files to process
+  if (showProgress && files.length > 0 && !options.watch) {
+    progressBar = new ProgressBar(files.length, {
+      showElapsed: true,
+      showCount: true,
+      width: 40,
+    });
+    progressBar.start();
+  }
+
   // Make array with promises for file changes
   // Wait for all promises to resolve
   const replaceList = await Promise.all(
     files.map((file) =>
-      OpenFilesLimit(() =>
-        replaceAlias(
+      OpenFilesLimit(async () => {
+        const result = await replaceAlias(
           config,
           file,
           options?.resolveFullPaths,
           options?.resolveFullExtension
-        )
-      )
+        );
+        
+        // Update progress bar if it's enabled
+        if (progressBar) {
+          processedCount++;
+          progressBar.update(processedCount);
+        }
+        
+        return result;
+      })
     )
   );
 
   // Count all changed files
   const replaceCount = replaceList.filter(Boolean).length;
+
+  // Complete the progress bar if it was started
+  if (progressBar) {
+    progressBar.complete(`Processed ${files.length} files, ${replaceCount} were updated`);
+  }
 
   output.info(`${replaceCount} files were affected!`);
   if (options.watch) {

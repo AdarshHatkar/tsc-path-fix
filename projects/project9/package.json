@@ -6,5 +6,9 @@
   },
   "dependencies": {
     "buffercursor.ts": "1.0.3"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }

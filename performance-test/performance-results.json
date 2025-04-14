@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-04-08T03:50:42.410Z",
+  "timestamp": "2025-04-14T19:12:18.860Z",
   "system": {
     "platform": "win32",
     "arch": "x64",
@@ -12,31 +12,23 @@
       "description": "Using tsc-path-fix with both replacers",
       "iterations": [
         {
-          "duration": 9.1820536,
-          "timestamp": "2025-04-08T03:50:51.597Z"
+          "duration": 25.0491463,
+          "timestamp": "2025-04-14T19:12:43.914Z"
         },
         {
-          "duration": 8.7833808,
-          "timestamp": "2025-04-08T03:51:00.381Z"
+          "duration": 25.4597615,
+          "timestamp": "2025-04-14T19:13:09.375Z"
         },
         {
-          "duration": 8.3961918,
-          "timestamp": "2025-04-08T03:51:08.778Z"
-        },
-        {
-          "duration": 8.5518895,
-          "timestamp": "2025-04-08T03:51:17.330Z"
-        },
-        {
-          "duration": 8.344545,
-          "timestamp": "2025-04-08T03:51:25.675Z"
+          "duration": 26.2631055,
+          "timestamp": "2025-04-14T19:13:35.638Z"
         }
       ],
       "stats": {
-        "min": 8.344545,
-        "max": 9.1820536,
-        "avg": 8.651612140000001,
-        "total": 43.2580607
+        "min": 25.0491463,
+        "max": 26.2631055,
+        "avg": 25.590671099999998,
+        "total": 76.7720133
       }
     },
     {
@@ -44,31 +36,23 @@
       "description": "Using tsc-alias with both replacers",
       "iterations": [
         {
-          "duration": 8.6024425,
-          "timestamp": "2025-04-08T03:51:34.279Z"
+          "duration": 27.57623,
+          "timestamp": "2025-04-14T19:14:03.215Z"
         },
         {
-          "duration": 8.84025,
-          "timestamp": "2025-04-08T03:51:43.119Z"
+          "duration": 27.299367,
+          "timestamp": "2025-04-14T19:14:30.515Z"
         },
         {
-          "duration": 9.0053038,
-          "timestamp": "2025-04-08T03:51:52.125Z"
-        },
-        {
-          "duration": 8.6239016,
-          "timestamp": "2025-04-08T03:52:00.750Z"
-        },
-        {
-          "duration": 9.398713,
-          "timestamp": "2025-04-08T03:52:10.149Z"
+          "duration": 27.3194895,
+          "timestamp": "2025-04-14T19:14:57.835Z"
         }
       ],
       "stats": {
-        "min": 8.6024425,
-        "max": 9.398713,
-        "avg": 8.89412218,
-        "total": 44.4706109
+        "min": 27.299367,
+        "max": 27.57623,
+        "avg": 27.39836216666667,
+        "total": 82.1950865
       }
     }
   ]

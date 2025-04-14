@@ -37,6 +37,11 @@ program
     '--outputcheck <extensions...>',
     'Overwrite file extensions used for path resolution'
   )
+  .option(
+    '--progress [boolean]',
+    'Show progress bar for long-running operations (default: true)',
+    true
+  )
   .parseAsync(process.argv);
 
 const options = program.opts();
@@ -50,6 +55,7 @@ replaceTscAliasPaths({
   debug: !!options.debug,
   resolveFullPaths: !!options.resolveFullPaths,
   replacers: options.replacer,
+  showProgress: options.progress !== 'false' && !!options.progress,
   fileExtensions: {
     inputGlob: options.inputglob,
     outputCheck: options.outputcheck

@@ -24,13 +24,14 @@
       "@config/*": ["./src/config/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "scripts/generateFiles.mjs"],
   "exclude": ["node_modules", "dist", "prisma"],
   "tsc-path-fix": {
     "verbose": true,
     "resolveFullPaths": true,
     "debug": true,
-    "watch": true,
+    "watch": false,
+    "showProgress": true,
     "replacers": {
       "prismaReplacer": {
         "enabled": false,

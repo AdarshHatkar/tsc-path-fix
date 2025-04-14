@@ -61,7 +61,27 @@ export function validateTscPathfixConfig(config: IRawTSConfig): string[] {
 
     if (outputCheck && !Array.isArray(outputCheck)) {
       errors.push('fileExtensions.outputCheck must be an array');
+    } else if (outputCheck && !outputCheck.every(item => typeof item === 'string')) {
+      errors.push('fileExtensions.outputCheck must be an array of strings');
     }
+  }
+
+  // Validate resolveFullPaths
+  if (tscPathfixConfig.resolveFullPaths !== undefined && 
+      typeof tscPathfixConfig.resolveFullPaths !== 'boolean') {
+    errors.push('resolveFullPaths must be a boolean value');
+  }
+
+  // Validate verbose
+  if (tscPathfixConfig.verbose !== undefined && 
+      typeof tscPathfixConfig.verbose !== 'boolean') {
+    errors.push('verbose must be a boolean value');
+  }
+  
+  // Validate showProgress
+  if (tscPathfixConfig.showProgress !== undefined && 
+      typeof tscPathfixConfig.showProgress !== 'boolean') {
+    errors.push('showProgress must be a boolean value');
   }
 
   return errors;

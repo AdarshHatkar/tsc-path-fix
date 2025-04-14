@@ -3,5 +3,9 @@
   "scripts": {
     "build": "tsc --project ./config/tsconfig.json && tsc-path-fix -p ./config/tsconfig.json",
     "start": "npm run build && node ./dist/index.js"
+  },
+  "devDependencies": {
+ 
+    "tsc-path-fix": "file:../../"
   }
 }
