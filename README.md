@@ -13,21 +13,26 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 
 ## Features
 
-- 🔄 Automatically converts TypeScript path aliases to relative paths
-- ⚡ Compile-time solution (no runtime dependencies)
-- 📦 Works with both local and external project aliases
-- 👀 Watch mode support for development
-- 🔍 Debug mode for troubleshooting
-- 🛠️ Customizable file extensions and path resolution
+- 🔄 **Smart Alias Resolution** - Automatically converts TypeScript path aliases to relative paths
+- ⚡ **Zero-Runtime Solution** - No runtime dependencies required in your production code
+- 💪 **Performance Optimized** - Built-in caching for path lookups and file system operations
+- 📦 **Project Reference Support** - Works seamlessly with both local and external project aliases
+- 👀 **Native Watch Mode** - Integrated file watching for development workflows
+- 🧩 **Custom Replacers** - Extend functionality with your own path replacement logic
+- 🛠️ **Highly Configurable** - Customize file extensions, path resolution, and processing behavior
+- 📁 **File Extension Support** - Handles various file extensions (js, jsx, cjs, mjs, d.ts, etc.)
+- 🔍 **Debug Mode** - Comprehensive debugging capabilities for troubleshooting
 
 ## Comparison to [tsconfig-paths](https://github.com/dividab/tsconfig-paths)
 
 | Feature | tsc-path-fix | tsconfig-paths |
 |---------|-------------|----------------|
-| Runtime Dependencies | None | Required |
-| Path Resolution | Compile-time | Runtime |
-| Performance | Better | Slower |
-| Bundle Size | Smaller | Larger |
+| Runtime Dependencies | None - works at compile time | Required - loads at runtime |
+| Path Resolution | Compile-time - converts to relative paths | Runtime - resolves during execution |
+| Performance | Better - no runtime overhead | Slower - adds runtime processing |
+| Bundle Size | Smaller - no code added to bundle | Larger - includes resolution code |
+| Caching | Built-in path and file caching | Limited caching |
+| External Project Support | Full support | Limited support |
 
 ## Comparison to [tsc-alias](https://github.com/justkey007/tsc-alias)
 
@@ -35,13 +40,15 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 |---------|-------------|-----------|
 | Runtime Dependencies | None | None |
 | Path Resolution | Compile-time | Compile-time |
-| External Project References | Supported | Limited support |
+| Performance | Optimized with caching | Standard |
+| External Project References | Fully supported | Limited support |
 | Watch Mode | Native support | Requires additional setup |
-| Debug Mode | Built-in | Limited |
-| Custom Replacers | Supported | Not supported |
-| File Extension Customization | Supported | Limited |
+| Debug Mode | Built-in with detailed logging | Limited |
+| Custom Replacers | Supported with extensible API | Not supported |
+| File Extension Customization | Comprehensive (js, jsx, cjs, mjs, d.ts, etc.) | Limited |
+| Path Resolution Logic | Smart resolution with fallbacks | Basic resolution |
+| Configuration Options | Extensive | Limited |
 | Active Maintenance | Yes | Yes |
-| Bundle Size | Smaller | Similar |
 
 ## Installation
 
@@ -125,6 +132,55 @@ import { util } from './utils/helper.js';
 }
 ```
 
+### 4. Custom Replacers
+
+Create a custom replacer to handle special path transformations:
+
+```javascript
+// customReplacer.js
+module.exports.default = ({ orig, file, config }) => {
+  // Quick check if the file contains any specific aliases
+  if (!orig.includes('@special')) {
+    return orig;
+  }
+  
+  // Replace occurrences with custom logic
+  return orig.replace(/@special\/([^'"]*)/, (match, path) => {
+    return `./specialized/${path}`;
+  });
+};
+```
+
+Configure it in your tsconfig.json:
+
+```json
+{
+  "tsc-path-fix": {
+    "replacers": {
+      "customReplacer": {
+        "enabled": true,
+        "file": "./customReplacer.js"
+      }
+    }
+  }
+}
+```
+
+### 5. Working with Different File Extensions
+
+Configure custom file extensions for your project:
+
+```json
+{
+  "tsc-path-fix": {
+    "fileExtensions": {
+      "inputGlob": "{js,jsx,mjs,cjs}",
+      "outputCheck": ["js", "jsx", "mjs", "cjs", "json"]
+    }
+  }
+}
+```
+
 ## Configuration
 
 ### Command Line Options
@@ -134,40 +190,72 @@ tsc-path-fix [options]
 
 Options:
   -p, --project <path>     Path to tsconfig.json (default: "tsconfig.json")
-  -w, --watch             Watch for file changes
-  --outDir <path>         Output directory
-  --resolveFullPaths      Resolve incomplete import paths
-  --verbose               Show detailed output
-  --debug                 Show debug information
+  -w, --watch              Watch for file changes and process them incrementally
+  --outDir <path>          Output directory for compiled files (overrides tsconfig.json)
+  --resolveFullPaths       Automatically resolve incomplete import paths (add extensions/index.js)
+  --verbose                Show detailed processing information
+  --debug                  Show extensive debug information including path resolution
+  --replacer <path>        Path to a custom replacer module
+  --fileExtensions <exts>  Comma-separated list of file extensions to process
+  -h, --help               Display help information
 ```
 
 ### Configuration via tsconfig.json
+
+You can configure tsc-path-fix in your `tsconfig.json` file:
 
 ```json
 {
   "compilerOptions": {
     // ... your TypeScript options
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"]
+    }
   },
   "tsc-path-fix": {
     "verbose": false,
+    "debug": false,
     "resolveFullPaths": true,
     "replacers": {
+      "default": {
+        "enabled": true
+      },
+      "base-url": {
+        "enabled": true
+      },
       "customReplacer": {
         "enabled": true,
         "file": "./customReplacer.js"
       }
     },
     "fileExtensions": {
-      "inputGlob": "{js,jsx,mjs}",
-      "outputCheck": ["js", "json", "jsx", "mjs"]
+      "inputGlob": "{js,jsx,mjs,cjs}",
+      "outputCheck": ["js", "json", "jsx", "mjs", "cjs", "d.ts", "d.tsx", "d.cts", "d.mts"]
     }
   }
 }
 ```
 
+#### Configuration Options Explained:
+
+- **verbose**: When true, outputs detailed processing information
+- **debug**: When true, outputs extensive debug information for troubleshooting
+- **resolveFullPaths**: Automatically adds file extensions and resolves index files
+- **replacers**: 
+  - **default**: Built-in replacer for processing path aliases
+  - **base-url**: Built-in replacer for handling baseUrl references
+  - **customReplacer**: Your own replacers (see Custom Replacers section)
+- **fileExtensions**:
+  - **inputGlob**: Glob pattern for finding files to process
+  - **outputCheck**: List of file extensions to check when resolving paths
+
 ## API Reference
 
 ### replaceTscAliasPaths(options?)
+
+Main function to replace TypeScript path aliases in compiled files:
 
 ```typescript
 import { replaceTscAliasPaths } from 'tsc-path-fix';
@@ -177,25 +265,80 @@ replaceTscAliasPaths();
 
 // With options
 replaceTscAliasPaths({
-  project: 'tsconfig.json',
-  watch: true,
-  verbose: true
+  project: 'tsconfig.json',        // Path to tsconfig.json
+  watch: true,                     // Enable watch mode
+  verbose: true,                   // Enable verbose logging
+  debug: false,                    // Enable debug logging
+  outDir: 'dist',                  // Output directory
+  resolveFullPaths: true,          // Auto-resolve incomplete paths
+  fileExtensions: ['js', 'jsx']    // File extensions to process
 });
 ```
 
-### Single File Processing
+### prepareSingleFileReplaceTscAliasPaths(options?)
+
+Function to create a file processor for individual files:
 
 ```typescript
 import { prepareSingleFileReplaceTscAliasPaths } from 'tsc-path-fix';
 
+// Create a file processor
 const processFile = await prepareSingleFileReplaceTscAliasPaths({
-  project: 'tsconfig.json'
+  project: 'tsconfig.json',
+  resolveFullPaths: true
 });
 
+// Process a single file
 const result = processFile({
   fileContents: 'import { foo } from "@utils/foo";',
   filePath: 'src/index.ts'
 });
+
+console.log(result); // 'import { foo } from "./utils/foo.js";'
+```
+
+### Custom Replacer API
+
+Create custom replacers to extend the functionality:
+
+```typescript
+// ES Module format
+export default function({ orig, file, config }) {
+  // orig: Original file contents (string)
+  // file: Path of the file being processed (string)
+  // config: Configuration object with project settings
+  
+  // Process file contents
+  return processedContents;
+}
+
+// CommonJS format
+module.exports.default = function({ orig, file, config }) {
+  // Process file contents
+  return processedContents;
+};
+```
+
+### Path Resolution Utilities
+
+For advanced use cases, you can access the core path resolution utilities:
+
+```typescript
+import { ImportPathResolver } from 'tsc-path-fix/utils';
+
+// Resolve full import paths (adding file extensions)
+const resolvedCode = ImportPathResolver.resolveFullImportPaths(
+  code,       // Source code
+  filePath,   // File path
+  '.js'       // Default extension
+);
+
+// Replace source import paths
+const processedCode = ImportPathResolver.replaceSourceImportPaths(
+  code,       // Source code
+  filePath,   // File path
+  replacer    // Path replacer function
+);
 ```
 
 ## Troubleshooting
