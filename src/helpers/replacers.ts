@@ -10,7 +10,28 @@ import { Dir } from 'mylas';
 import { isAbsolute, join } from 'path';
 import { IConfig, ReplacerOptions } from '../interfaces';
 import { replaceSourceImportPaths, resolveFullImportPaths } from '../utils';
+import { fileContainsPattern, streamProcessFile } from '../utils/stream-utils';
+import { newImportStatementRegex } from '../utils/import-path-resolver';
 import normalizePath = require('normalize-path');
+
+// Import regex for quick filtering - used to avoid processing files without imports
+const quickFilterRegex = /import|require|from/;
+
+// Cache for file contents to avoid redundant reading of unchanged files
+const fileContentCache = new Map<string, { mtime: number; content: string }>();
+
+// Maximum number of entries to store in the cache before starting to evict
+const MAX_CACHE_SIZE = 1000;
+
+// Threshold for using streaming vs in-memory processing (in bytes)
+const STREAMING_THRESHOLD = 1024 * 1024; // 1MB
+
+/**
+ * Clears the file content cache
+ */
+export function clearFileContentCache(): void {
+  fileContentCache.clear();
+}
 
 /**
  * importReplacers imports replacers for tsc-path-fix to use.
@@ -132,7 +153,83 @@ export async function replaceAlias(
   resolveFullExtension?: string
 ): Promise<boolean> {
   config.output.debug('Starting to replace file:', file);
-  const code = await fsp.readFile(file, 'utf8');
+  
+  // First, quickly check if file contains any import-like statements to avoid unnecessary processing
+  const hasImports = await fileContainsPattern(file, quickFilterRegex);
+  if (!hasImports) {
+    config.output.debug('File has no import/require statements, skipping:', file);
+    return false;
+  }
+  
+  // Get file stats to check modification time and size
+  const stats = await fsp.stat(file).catch(() => null);
+  if (!stats) {
+    config.output.debug('File not found or cannot be accessed:', file);
+    return false;
+  }
+  
+  // For large files, use streaming approach
+  if (stats.size >= STREAMING_THRESHOLD) {
+    config.output.debug('Using streaming for large file:', file);
+    
+    // Check if file has actual import statements that need processing
+    const needsProcessing = await fileContainsPattern(file, newImportStatementRegex());
+    if (!needsProcessing) {
+      config.output.debug('Large file has no import statements to process, skipping:', file);
+      return false;
+    }
+    
+    // Use string transformer function with our streaming utility
+    let wasModified = false;
+    await streamProcessFile(file, (content) => {
+      const transformed = replaceAliasString(
+        config,
+        file,
+        content,
+        resolveFullPath,
+        resolveFullExtension
+      );
+      
+      if (transformed !== content) {
+        wasModified = true;
+      }
+      
+      return transformed;
+    });
+    
+    if (wasModified) {
+      config.output.debug('Replaced file with changes using streaming approach:', file);
+    }
+    
+    return wasModified;
+  }
+  
+  // For smaller files, use the in-memory approach with caching
+  let code: string;
+  
+  // Check if we have a cached version that's still valid
+  const cached = fileContentCache.get(file);
+  if (cached && cached.mtime === stats.mtime.getTime()) {
+    code = cached.content;
+    config.output.debug('Using cached file content:', file);
+  } else {
+    // Read the file if not cached or cache is stale
+    code = await fsp.readFile(file, 'utf8');
+    
+    // Manage cache size by evicting entries if necessary
+    if (fileContentCache.size >= MAX_CACHE_SIZE) {
+      const keysToDelete = Array.from(fileContentCache.keys()).slice(0, Math.floor(MAX_CACHE_SIZE * 0.2));
+      keysToDelete.forEach(key => fileContentCache.delete(key));
+      config.output.debug('Evicted entries from file cache, new size:', fileContentCache.size);
+    }
+    
+    // Update the cache
+    fileContentCache.set(file, {
+      mtime: stats.mtime.getTime(),
+      content: code
+    });
+  }
+  
   const tempCode = replaceAliasString(
     config,
     file,
@@ -144,8 +241,19 @@ export async function replaceAlias(
   if (code !== tempCode) {
     config.output.debug('replaced file with changes:', file);
     await fsp.writeFile(file, tempCode, 'utf8');
+    
+    // Update cache with the new content
+    const newStats = await fsp.stat(file).catch(() => null);
+    if (newStats) {
+      fileContentCache.set(file, {
+        mtime: newStats.mtime.getTime(),
+        content: tempCode
+      });
+    }
+    
     return true;
   }
+  
   config.output.debug('replaced file without changes:', file);
   return false;
 }

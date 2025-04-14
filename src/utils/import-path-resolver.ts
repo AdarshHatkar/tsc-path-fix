@@ -53,6 +53,16 @@ const importRegexString = `(?:${[
   moduleStyle
 ].join(`|`)})`;
 
+// Precompile regexes with different flags for better performance
+const importRegexGlobal = new RegExp(importRegexString, 'g');
+const importRegexNonGlobal = new RegExp(importRegexString);
+const stringRegex = new RegExp(
+  `(?<pathWithQuotes>${anyQuote}(?<path>${pathStringContent})${anyQuote})`
+);
+
+// Cache for resolved paths to avoid redundant file system calls
+const pathResolutionCache = new Map<string, string>();
+
 class ImportPathResolver {
   constructor(
     public source: string,
@@ -68,10 +78,7 @@ class ImportPathResolver {
    * function (a la `String.prototype.replace(globalRegex,replacer)`)
    */
   replaceSourceImportPaths(replacer: StringReplacer) {
-    this.source = this.source.replace(
-      ImportPathResolver.newImportStatementRegex('g'),
-      replacer
-    );
+    this.source = this.source.replace(importRegexGlobal, replacer);
     return this;
   }
 
@@ -83,7 +90,7 @@ class ImportPathResolver {
   resolveFullImportPaths(ext = '.js') {
     this.replaceSourceImportPaths((importStatement) => {
       // Find substring that is just quotes
-      const importPathMatch = importStatement.match(newStringRegex());
+      const importPathMatch = importStatement.match(stringRegex);
       if (!importPathMatch) {
         return importStatement;
       }
@@ -109,13 +116,25 @@ class ImportPathResolver {
     ) {
       return importPath;
     }
+
+    // Check cache first
+    const cacheKey = `${this.sourceDir}:${importPath}:${ext}`;
+    if (pathResolutionCache.has(cacheKey)) {
+      return pathResolutionCache.get(cacheKey);
+    }
+
+    let resolvedPath = importPath;
+    
     // Try adding the extension (if not obviously a directory)
     if (!importPath.match(/[/\\]$/)) {
       const asFilePath = `${importPath}${ext}`;
       if (existsSync(resolve(this.sourceDir, asFilePath))) {
-        return asFilePath;
+        resolvedPath = asFilePath;
+        pathResolutionCache.set(cacheKey, resolvedPath);
+        return resolvedPath;
       }
     }
+    
     // Assume the path is a folder; try adding index.js
     let asFilePath = join(importPath, 'index' + ext);
     if (
@@ -124,19 +143,22 @@ class ImportPathResolver {
     ) {
       asFilePath = './' + asFilePath;
     }
-    return existsSync(resolve(this.sourceDir, asFilePath))
+    
+    resolvedPath = existsSync(resolve(this.sourceDir, asFilePath))
       ? asFilePath
       : importPath;
+      
+    // Cache the result
+    pathResolutionCache.set(cacheKey, resolvedPath);
+    return resolvedPath;
   }
 
   static newStringRegex() {
-    return new RegExp(
-      `(?<pathWithQuotes>${anyQuote}(?<path>${pathStringContent})${anyQuote})`
-    );
+    return stringRegex;
   }
 
   static newImportStatementRegex(flags = '') {
-    return new RegExp(importRegexString, flags);
+    return flags === 'g' ? importRegexGlobal : importRegexNonGlobal;
   }
 
   static resolveFullImportPaths(code: string, path: string, ext = '.js') {
@@ -152,6 +174,13 @@ class ImportPathResolver {
     return new ImportPathResolver(code, path).replaceSourceImportPaths(replacer)
       .source;
   }
+  
+  /**
+   * Clear the path resolution cache - useful when watching for file changes
+   */
+  static clearCache() {
+    pathResolutionCache.clear();
+  }
 }
 
 // Export aliases for the static functions
@@ -162,3 +191,4 @@ export const newImportStatementRegex =
 export const replaceSourceImportPaths =
   ImportPathResolver.replaceSourceImportPaths;
 export const newStringRegex = ImportPathResolver.newStringRegex;
+export const clearPathResolutionCache = ImportPathResolver.clearCache;
