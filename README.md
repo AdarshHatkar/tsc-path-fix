@@ -10,6 +10,51 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 [![GitHub issues](https://img.shields.io/github/issues/AdarshHatkar/tsc-path-fix.svg)](https://github.com/AdarshHatkar/tsc-path-fix/issues)
 
 > **TypeScript Path Alias Resolver** - Fast, zero-runtime path resolution for TypeScript projects.
+## Installation
+
+You can install tsc-path-fix either globally or as a dev dependency:
+
+```sh
+# Global installation
+npm install -g tsc-path-fix
+
+# Local installation (recommended)
+npm install --save-dev tsc-path-fix
+```
+
+
+## Quick Start
+
+1. Add the build script to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "tsc && tsc-path-fix",
+    "build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-path-fix -w\")"
+  }
+}
+```
+
+2. Configure your `tsconfig.json` with path aliases:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"]
+    }
+  }
+}
+```
+
+3. Run the build:
+
+```sh
+npm run build
+```
 
 ## Features
 
@@ -50,50 +95,8 @@ Zero-runtime TypeScript path resolver that converts aliases to relative paths at
 | Configuration Options | Extensive | Limited |
 | Active Maintenance | Yes | Yes |
 
-## Installation
 
-You can install tsc-path-fix either globally or as a dev dependency:
 
-```sh
-# Global installation
-npm install -g tsc-path-fix
-
-# Local installation (recommended)
-npm install --save-dev tsc-path-fix
-```
-
-## Quick Start
-
-1. Add the build script to your `package.json`:
-
-```json
-{
-  "scripts": {
-    "build": "tsc && tsc-path-fix",
-    "build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-path-fix -w\")"
-  }
-}
-```
-
-2. Configure your `tsconfig.json` with path aliases:
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"]
-    }
-  }
-}
-```
-
-3. Run the build:
-
-```sh
-npm run build
-```
 
 ## Common Use Cases
 
