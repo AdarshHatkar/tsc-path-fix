@@ -63,6 +63,7 @@
   },
   "homepage": "https://github.com/AdarshHatkar/tsc-path-fix",
   "dependencies": {
+    "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
     "commander": "^11.1.0",
     "globby": "^14.0.0",
@@ -71,6 +72,7 @@
     "plimit-lit": "^1.2.6"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/node": "^20.11.24",
     "@types/normalize-path": "^3.0.2",
     "@types/rimraf": "^3.0.2",

@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 import { Option, program } from 'commander';
 import { replaceTscAliasPaths } from '..';
+import { notifyUpdates } from '../utils';
 
 const { version } = require('../../package.json');
 
@@ -46,18 +47,28 @@ program
 
 const options = program.opts();
 
-replaceTscAliasPaths({
-  resolveFullExtension: options.resolveFullExtension,
-  configFile: options.project,
-  watch: !!options.watch,
-  outDir: options.dir,
-  verbose: !!options.verbose,
-  debug: !!options.debug,
-  resolveFullPaths: !!options.resolveFullPaths,
-  replacers: options.replacer,
-  showProgress: options.progress !== 'false' && !!options.progress,
-  fileExtensions: {
-    inputGlob: options.inputglob,
-    outputCheck: options.outputcheck
-  }
+// Make the function async to properly await the replaceTscAliasPaths completion
+(async () => {
+  // Wait for replaceTscAliasPaths to complete
+  await replaceTscAliasPaths({
+    resolveFullExtension: options.resolveFullExtension,
+    configFile: options.project,
+    watch: !!options.watch,
+    outDir: options.dir,
+    verbose: !!options.verbose,
+    debug: !!options.debug,
+    resolveFullPaths: !!options.resolveFullPaths,
+    replacers: options.replacer,
+    showProgress: options.progress !== 'false' && !!options.progress,
+    fileExtensions: {
+      inputGlob: options.inputglob,
+      outputCheck: options.outputcheck
+    }
+  });
+
+  // Only check for updates after replaceTscAliasPaths has completed
+  notifyUpdates(true, true);
+})().catch(err => {
+  console.error('Error:', err);
+  process.exit(1);
 });
