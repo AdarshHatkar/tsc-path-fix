@@ -1,7 +1,7 @@
 /**
  * @file
  *
- * This file has all helperfunctions related to replacing.
+ * This file has all helper functions related to replacing.
  */
 
 /** */
