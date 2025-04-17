@@ -273,21 +273,54 @@ export function replaceAliasString(
   resolveFullPath?: boolean,
   resolveFullExtension?: string
 ): string {
-  config.replacers.forEach((replacer) => {
-    code = replaceSourceImportPaths(code, file, (orig) =>
-      replacer({
-        orig,
-        file,
-        config
-      })
-    );
-  });
+  let previousCode = '';
+  let currentCode = code;
+  let iterationCount = 0;
+  const MAX_ITERATIONS = 5; // Prevent infinite loops while allowing multiple passes
+  
+  // Continue until no more changes are made or max iterations reached
+  while (previousCode !== currentCode && iterationCount < MAX_ITERATIONS) {
+    previousCode = currentCode;
+    iterationCount++;
+    
+    config.output.debug(`Alias resolution pass #${iterationCount} for ${file}`);
+    
+    // Clear all caches between iterations to ensure fresh resolution
+    if (iterationCount > 1) {
+      // Import these functions at the top of the file
+      const { clearPathResolutionCache } = require('../utils/import-path-resolver');
+      const { clearTrieCache } = require('../utils/trie'); 
+      
+      // Clear caches to ensure fresh path resolution in each iteration
+      clearPathResolutionCache();
+      clearTrieCache();
+      
+      // Also clear the pathCache in the config if possible
+      if (config.pathCache && typeof config.pathCache.clearCache === 'function') {
+        config.pathCache.clearCache();
+      }
+    }
+    
+    config.replacers.forEach((replacer) => {
+      currentCode = replaceSourceImportPaths(currentCode, file, (orig) =>
+        replacer({
+          orig,
+          file,
+          config
+        })
+      );
+    });
+  }
+  
+  if (iterationCount > 1) {
+    config.output.debug(`Completed ${iterationCount} passes for full alias resolution in ${file}`);
+  }
 
   // Fully resolve all import paths (not just aliased ones)
   // *after* the aliases are resolved
   if (resolveFullPath) {
-    code = resolveFullImportPaths(code, file, resolveFullExtension);
+    currentCode = resolveFullImportPaths(currentCode, file, resolveFullExtension);
   }
 
-  return code;
+  return currentCode;
 }

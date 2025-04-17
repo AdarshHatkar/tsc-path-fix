@@ -14,7 +14,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build:dev": "npm run clean && tsc -w",
+    "dev": "npm run clean && tsc -w",
     "clean": "rimraf dist && tsc",
     "release:patch": "npm version patch",
     "postversion": "git push && git push --tags && npm publish",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
+    "@types/normalize-path": "^3.0.2",
     "@types/rimraf": "^3.0.2",
     "@types/shelljs": "^0.8.11",
     "husky": "^9.0.11",

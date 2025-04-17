@@ -126,4 +126,15 @@ export class PathCache {
       )
     );
   }
+
+  /**
+   * clearCache clears all internal caches
+   * Useful for recursive path resolution to ensure fresh lookups
+   */
+  public clearCache(): void {
+    if (this.useCache) {
+      this.existsCache.clear();
+      this.absoluteCache.clear();
+    }
+  }
 }
