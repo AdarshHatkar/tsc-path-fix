@@ -33,9 +33,9 @@ program
   .option('-v, --verbose', 'Additional information is send to the terminal')
   .option('--debug', 'Debug information is send to the terminal')
   .option('-r, --replacer <replacers...>', 'path to optional extra replacer')
-  .option('--inputglob <glob>', 'Overwrite glob used for file scanning')
+  .option('--inputGlob <glob>', 'Overwrite glob used for file scanning')
   .option(
-    '--outputcheck <extensions...>',
+    '--outputCheck <extensions...>',
     'Overwrite file extensions used for path resolution'
   )
   .option(
@@ -61,8 +61,8 @@ const options = program.opts();
     replacers: options.replacer,
     showProgress: options.progress !== 'false' && !!options.progress,
     fileExtensions: {
-      inputGlob: options.inputglob,
-      outputCheck: options.outputcheck
+      inputGlob: options.inputGlob,
+      outputCheck: options.outputCheck
     }
   });
 
