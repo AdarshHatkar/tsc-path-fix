@@ -45,7 +45,9 @@ export class PathCache {
       return this.existsCache.get(path);
     } else {
       const result = this.exists(path);
-      this.existsCache.set(path, result);
+      if (result) {
+        this.existsCache.set(path, result);
+      }
       return result;
     }
   }
@@ -63,7 +65,9 @@ export class PathCache {
       return this.absoluteCache.get(this.getCacheKey(request));
     } else {
       const result = this.getAAP(request);
-      this.absoluteCache.set(this.getCacheKey(request), result);
+      if (!result.startsWith('---')) {
+        this.absoluteCache.set(this.getCacheKey(request), result);
+      }
       return result;
     }
   }

@@ -1,14 +1,13 @@
 {
   "name": "root-package",
   "scripts": {
-    "build": "npm run build -ws",
-    "start": "npm install && npm run build && npm run start -ws"
+    "build": "npm run build --workspaces",
+    "start": "npm install && npm run build && npm run start --workspaces"
   },
   "workspaces": [
     "./packages/*"
   ],
   "devDependencies": {
- 
     "tsc-path-fix": "file:../../"
   }
 }
