@@ -94,5 +94,6 @@ types
 
 .npmrc
 
-performance-test/src/**
+performance-test/**
 
+projects/**
