@@ -19,10 +19,6 @@ import { isAbsolute, normalize, relative, resolve } from 'path';
 import { findBasePathOfAlias, relativeOutPathToConfigDir } from '../helpers';
 import { Alias, IProjectConfig, PathLike } from '../interfaces';
 
-// Cache for search results to avoid repeated traversals
-const searchCache = new Map<string, any>();
-const MAX_CACHE_SIZE = 2000; // Maximum number of cached entries
-
 export class TrieNode<T> {
   private children: Map<string, TrieNode<T>>;
   public data: T | null;
@@ -42,23 +38,21 @@ export class TrieNode<T> {
    */
   public add(name: string, data: T): void {
     if (name.length <= 0) return;
-    
+
     const firstChar = name[0];
     const node = this.children.has(firstChar)
       ? this.children.get(firstChar)
       : new TrieNode<T>();
-      
+
     if (name.length == 1) {
       node.data = data;
       node.isEndOfWord = true;
     } else {
       node.add(name.substring(1), data);
     }
-    
+
     this.children.set(firstChar, node);
-    
-    // Clear cache when adding new entries to ensure consistency
-    searchCache.clear();
+
   }
 
   /**
@@ -69,22 +63,15 @@ export class TrieNode<T> {
    * @returns {T | null} the alias data or null.
    */
   public search(name: string): T | null {
-    // Check cache first for improved performance
-    const cachedResult = searchCache.get(name);
-    if (cachedResult !== undefined) {
-      return cachedResult;
-    }
-    
     if (name.length <= 0) {
-      searchCache.set(name, null);
       return null;
     }
 
     const firstChar = name[0];
     const node = this.children.get(firstChar);
-    
+
     let result = null;
-    
+
     if (node) {
       if (name.length === 1) {
         result = node.data;
@@ -97,24 +84,14 @@ export class TrieNode<T> {
     } else {
       result = this.data;
     }
-    
-    // Manage cache size
-    if (searchCache.size >= MAX_CACHE_SIZE) {
-      // Remove oldest 20% entries when cache gets too large
-      const keysToDelete = Array.from(searchCache.keys()).slice(0, Math.floor(MAX_CACHE_SIZE * 0.2));
-      keysToDelete.forEach(key => searchCache.delete(key));
-    }
-    
-    // Cache the result
-    searchCache.set(name, result);
+
     return result;
   }
-  
+
   /**
    * Clears the search cache
    */
   public static clearCache(): void {
-    searchCache.clear();
   }
 
   /**
@@ -133,25 +110,25 @@ export class TrieNode<T> {
     if (!paths) {
       return aliasTrie;
     }
-    
+
     // Pre-compute the resolved config base URL for performance
     const resolvedBaseUrl = resolve(config.configDir, config.baseUrl);
-    
+
     // Prepare a mapping of prefixes to aliases for batch processing
     const aliasMap = Object.keys(paths).map((alias) => {
       const shouldPrefixMatchWildly = alias.endsWith('*');
       const prefix = alias.replace(/\*$/, '');
-      
+
       // Process and normalize paths in a single pass
       const normalizedPaths = paths[alias].map((path) => {
         path = path.replace(/\*$/, '');
-        
+
         // Extract and normalize extensions if needed
         const dotIndex = path.lastIndexOf('.');
         if (dotIndex !== -1) {
           const beforeDot = path.slice(0, dotIndex);
           const afterDot = path.slice(dotIndex);
-          
+
           // Only normalize if it's clearly an extension and not part of a path
           if (!afterDot.includes('/') && !afterDot.includes('\\')) {
             const extension = afterDot;
@@ -162,30 +139,30 @@ export class TrieNode<T> {
             }
           }
         }
-        
+
         // Convert absolute paths to relative paths
         if (isAbsolute(path)) {
           path = relative(resolvedBaseUrl, path);
         }
-        
+
         return path;
       });
-      
+
       return {
         shouldPrefixMatchWildly,
         prefix,
         paths: normalizedPaths
       };
     });
-    
+
     // Compute relative paths once if needed
-    if (aliasMap.some(alias => 
-      alias.paths.some(path => normalize(path).includes('..')) && 
+    if (aliasMap.some(alias =>
+      alias.paths.some(path => normalize(path).includes('..')) &&
       !config.configDirInOutPath
     )) {
       relativeOutPathToConfigDir(config);
     }
-    
+
     // Add all aliases to the trie
     aliasMap.forEach(alias => {
       if (alias.prefix) {
@@ -196,7 +173,7 @@ export class TrieNode<T> {
         });
       }
     });
-    
+
     return aliasTrie;
   }
 }
@@ -207,8 +184,6 @@ function isDTS(extension: string): boolean {
 }
 
 /**
- * Export a function to clear the trie search cache
+ * Retained for API compatibility; trie searches no longer use global state.
  */
-export function clearTrieCache(): void {
-  searchCache.clear();
-}
+export function clearTrieCache(): void { }

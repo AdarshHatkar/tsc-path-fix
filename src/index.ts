@@ -60,12 +60,12 @@ async function processFilesInBatches(
 ): Promise<number> {
   let processedCount = 0;
   let modifiedCount = 0;
-  
+
   // Process files in batches to limit memory usage
   for (let i = 0; i < files.length; i += BATCH_SIZE) {
     const batch = files.slice(i, i + BATCH_SIZE);
     config.output.debug(`Processing batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(files.length / BATCH_SIZE)}`);
-    
+
     // Process this batch
     const batchResults = await Promise.all(
       batch.map((file) =>
@@ -76,27 +76,27 @@ async function processFilesInBatches(
             options?.resolveFullPaths,
             options?.resolveFullExtension
           );
-          
+
           // Update progress bar if it's enabled
           if (progressBar) {
             processedCount++;
             progressBar.update(processedCount);
           }
-          
+
           return result;
         })
       )
     );
-    
+
     // Count modified files in this batch
     modifiedCount += batchResults.filter(Boolean).length;
-    
+
     // Force garbage collection-friendly behavior by clearing references
     if (global.gc && typeof global.gc === 'function') {
       global.gc();
     }
   }
-  
+
   return modifiedCount;
 }
 
@@ -107,13 +107,18 @@ async function processFilesInBatches(
 export async function replaceTscAliasPaths(
   options: ReplaceTscAliasPathsOptions = { ...defaultConfig }
 ) {
+  // A full run must not reuse path results from a previous run or build stage.
+  clearPathResolutionCache();
+  clearTrieCache();
+  clearFileContentCache();
+
   const config = await prepareConfig(options);
   const output = config.output;
   const showProgress = options.showProgress !== undefined ? options.showProgress : config.showProgress;
 
   // Finding files and changing alias paths
   const posixOutput = config.outPath.replace(/\\/g, '/').replace(/\/+$/g, '');
-  
+
   // More efficient globbing pattern with additional exclusions
   const globPattern = [
     `${posixOutput}/**/*.${config.inputGlob}`,
@@ -122,7 +127,7 @@ export async function replaceTscAliasPaths(
     `!${posixOutput}/**/dist/**`,
     `!${posixOutput}/**/build/**`
   ];
-  
+
   output.debug('Search pattern:', globPattern);
   const files = globbySync(globPattern, {
     dot: true,

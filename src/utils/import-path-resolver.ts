@@ -67,7 +67,7 @@ class ImportPathResolver {
   constructor(
     public source: string,
     readonly sourcePath: string
-  ) {}
+  ) { }
 
   get sourceDir() {
     return dirname(this.sourcePath);
@@ -124,7 +124,7 @@ class ImportPathResolver {
     }
 
     let resolvedPath = importPath;
-    
+
     // Try adding the extension (if not obviously a directory)
     if (!importPath.match(/[/\\]$/)) {
       const asFilePath = `${importPath}${ext}`;
@@ -134,7 +134,7 @@ class ImportPathResolver {
         return resolvedPath;
       }
     }
-    
+
     // Assume the path is a folder; try adding index.js
     let asFilePath = join(importPath, 'index' + ext);
     if (
@@ -143,13 +143,16 @@ class ImportPathResolver {
     ) {
       asFilePath = './' + asFilePath;
     }
-    
+
     resolvedPath = existsSync(resolve(this.sourceDir, asFilePath))
       ? asFilePath
       : importPath;
-      
-    // Cache the result
-    pathResolutionCache.set(cacheKey, resolvedPath);
+
+    // Cache only successful resolutions. A missing file can be emitted later
+    // during a build and must be checked again instead of staying unresolved.
+    if (resolvedPath !== importPath) {
+      pathResolutionCache.set(cacheKey, resolvedPath);
+    }
     return resolvedPath;
   }
 
@@ -174,7 +177,7 @@ class ImportPathResolver {
     return new ImportPathResolver(code, path).replaceSourceImportPaths(replacer)
       .source;
   }
-  
+
   /**
    * Clear the path resolution cache - useful when watching for file changes
    */
