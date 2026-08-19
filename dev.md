@@ -1,1 +1,1 @@
-"tsc-path-fix": "file:C:/primexopRepo/tsc-path-fix",
+"tsc-path-fix": "file:C:/primexopRepos/tsc-path-fix",
